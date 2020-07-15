@@ -25,6 +25,7 @@ class _ClockDisplayState extends State<ClockDisplay> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      
       child: RichText(
         text: TextSpan(
             style: TextStyle(

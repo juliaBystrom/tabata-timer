@@ -25,6 +25,7 @@ class _StartState extends State<Start> {
   @override
   Widget build(BuildContext context) {
     int seconds = secondsPassed % 60;
+    // Truncate the number to get rid of decimal that represent seconds
     int minutes = secondsPassed ~/ 60;
 
     if (timer == null) {
@@ -37,9 +38,12 @@ class _StartState extends State<Start> {
     // int hours = secondsPassed ~/ (60 * 60);
 
     return Container(
+      // color: Colors.deepOrange,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        // mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ClockDisplay(minutes, seconds),
           RaisedButton(
