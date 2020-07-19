@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
+// import 'dart:async';
 
 class ClockDisplay extends StatefulWidget {
   int minutes;
-
   int seconds;
   ClockDisplay(this.minutes, this.seconds);
 
@@ -25,7 +24,6 @@ class _ClockDisplayState extends State<ClockDisplay> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       child: RichText(
         text: TextSpan(
             style: TextStyle(
