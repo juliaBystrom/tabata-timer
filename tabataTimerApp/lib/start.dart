@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import './clockDisplay.dart';
+import 'tabataInfo.dart';
 
 class Start extends StatefulWidget {
+  TabtaInfo tabataInfo;
+  TabataHandler tabataHandler;
+
+  Start(TabtaInfo tabataInfo) {
+    this.tabataInfo = tabataInfo;
+    tabataHandler = tabataInfo.tabataHandler;
+  }
+
   @override
   _StartState createState() => _StartState();
 }
@@ -10,16 +19,42 @@ class Start extends StatefulWidget {
 class _StartState extends State<Start> {
   static const duration = const Duration(seconds: 1);
 
-  int secondsPassed = 100;
+  int secondsPassed;
   bool isActive = false;
   Timer timer;
+  bool isWorking;
+  bool isResting;
+
+  @override
+  void initState() {
+    secondsPassed = widget.tabataHandler.getActiveTime();
+    super.initState();
+  }
 
   void handleTick() {
     if (isActive) {
       setState(() {
         secondsPassed = secondsPassed - 1;
       });
+      if (secondsPassed <= 0) {
+        updateTabataProgress();
+      }
     }
+  }
+
+  void updateTabataProgress() {
+    // OBS updateInfo need to be valled before geting the time
+    widget.tabataHandler.updateInfo();
+    secondsPassed = widget.tabataHandler.getActiveTime();
+    // Maybe useless bool
+    isWorking = !isWorking;
+    isResting = !isResting;
+  }
+
+  void initTabata() {
+    isWorking = widget.tabataHandler.isWorking;
+    isResting = widget.tabataHandler.isResting;
+    secondsPassed = widget.tabataHandler.getActiveTime();
   }
 
   @override
@@ -28,6 +63,7 @@ class _StartState extends State<Start> {
     // Truncate the number to get rid of decimal that represent seconds
     int minutes = secondsPassed ~/ 60;
 
+    // I could probably put this in the parent widget
     if (timer == null) {
       // timer = Timer(duration, handleTick);
       timer = Timer.periodic(duration, (Timer t) {
@@ -52,16 +88,13 @@ class _StartState extends State<Start> {
             child: Text(isActive ? 'STOP' : 'START'),
             onPressed: () {
               setState(() {
+                initTabata();
                 isActive = !isActive;
               });
             },
           )
-
         ],
       ),
     );
   }
 }
-
-
-

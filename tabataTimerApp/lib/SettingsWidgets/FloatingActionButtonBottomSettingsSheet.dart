@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import '../tabataInfo.dart';
 import './settingsPane.dart';
+import 'dart:async';
+import '../Painters/BottomSheetPainer.dart';
 
 class FloatingActionButtonBottomSettingsSheet extends StatefulWidget {
   final TabtaInfo tabataInfo;
   FloatingActionButtonBottomSettingsSheet(this.tabataInfo);
   @override
-  _FloatingActionButtonBottomSettingsSheetState createState() => _FloatingActionButtonBottomSettingsSheetState();
+  _FloatingActionButtonBottomSettingsSheetState createState() =>
+      _FloatingActionButtonBottomSettingsSheetState();
 }
 
-class _FloatingActionButtonBottomSettingsSheetState extends State<FloatingActionButtonBottomSettingsSheet> {
+class _FloatingActionButtonBottomSettingsSheetState
+    extends State<FloatingActionButtonBottomSettingsSheet> {
   bool showButton = true;
 
   @override
@@ -18,38 +22,51 @@ class _FloatingActionButtonBottomSettingsSheetState extends State<FloatingAction
         ? FloatingActionButton(
             // backgroundColor: Colors.green,
             onPressed: () {
-              var bottomSheetController = showBottomSheet(
+              var bottomSheetController = showModalBottomSheet(
                 context: context,
+                backgroundColor: Colors.transparent,
                 builder: (context) => Container(
-                  color: Color(0xffFFF8F0),
-                  child: Container(
-                    height: 500,
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                        colors: [
-                          const Color(0xff340068),
-                          const Color(0xff5200a3),
-                          // const Color(0xffFFF8F0)
-                        ],
-                        radius: 0.8,
-                        center: FractionalOffset(0.5, 1),
-                      ),
+                  height: 500,
+                  // clipBehavior: ,
+                  //clipBehavior: Clip.antiAliasWithSaveLayer,
 
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(50),
-                        topRight: Radius.circular(50),
-                      ),
-                      //RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                  decoration: BoxDecoration(
+                    gradient: RadialGradient(
+                      colors: [
+                        const Color(0xff340068),
+                        const Color(0xff5200a3),
+                        // const Color(0xff7000e0),
+                      ],
+                      radius: 0.9,
+                      center: FractionalOffset(0.5, 1),
                     ),
-                    padding: EdgeInsets.all(20),
-                    child: SettingsPane(widget.tabataInfo),
+                    // shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50),
+                    ),
+                    // backgroundBlendMode: BlendMode.xor,
+                    //RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                   ),
+                  padding: EdgeInsets.all(20),
+                  child: SettingsPane(widget.tabataInfo),
                 ),
               );
+
               showFoatingActionButton(false);
-              bottomSheetController.closed.then((value) {
+              bottomSheetController.whenComplete(() {
                 showFoatingActionButton(true);
+                // Updates the tabataHandler with the new settings
+                widget.tabataInfo.updateTabataHandler();
+                print("stängd modal bottom sheet");
               });
+
+              /*       bottomSheetController.closed.then((value) {
+              showFoatingActionButton(true);
+                // Updates the tabataHandler with the new settings 
+                widget.tabataInfo.updateTabataHandler();
+
+              }); */
             },
           )
         : Container();
@@ -61,5 +78,3 @@ class _FloatingActionButtonBottomSettingsSheetState extends State<FloatingAction
     });
   }
 }
-
-
