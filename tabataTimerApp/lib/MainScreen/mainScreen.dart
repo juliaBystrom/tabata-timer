@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import './clockDisplay.dart';
-import 'tabataInfo.dart';
+import '../tabataInfo.dart';
 
 class MainScreen extends StatefulWidget {
   TabtaInfo tabataInfo;
@@ -74,12 +74,6 @@ class _MainScreenState extends State<MainScreen> {
     isResting = !isResting;
   }
 
-/*   void initTabata() {
-    isWorking = widget.tabataHandler.isWorking;
-    isResting = widget.tabataHandler.isResting;
-    // secondsPassed = widget.tabataHandler.getActiveTime();
-  } */
-
   void newTabataInfo() {
     tabataHandler = widget.tabataInfo.getTabataHandler();
 
@@ -116,8 +110,6 @@ class _MainScreenState extends State<MainScreen> {
       widget.mainScreenFunctionsSet = true;
     }
 
-    // int hours = secondsPassed ~/ (60 * 60);
-
     return Container(
       // color: Colors.deepOrange,
       child: Column(
@@ -127,17 +119,7 @@ class _MainScreenState extends State<MainScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ClockDisplay(minutes, seconds),
-          RaisedButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            child: Text(isActive ? 'STOP' : 'START'),
-            onPressed: () {
-              setState(() {
-                // initTabata();
-                isActive = !isActive;
-              });
-            },
-          )
+          
         ],
       ),
     );

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'tabataInfo.dart';
+import '../tabataInfo.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StartTimer extends StatefulWidget {
-  TabtaInfo tabataInfo;
-  StartTimer(this.tabataInfo);
+  final TabtaInfo tabataInfo;
+  final Function changeBottomNavBarVisibility;
+  StartTimer(this.tabataInfo, this.changeBottomNavBarVisibility);
 
   final TextStyle textStyle = GoogleFonts.squadaOne(
     // fontSize: 20,
@@ -15,14 +16,20 @@ class StartTimer extends StatefulWidget {
 }
 
 class _StartTimerState extends State<StartTimer> {
+  
+  void onPressFunction() {
+    setState(() {
+      widget.tabataInfo.startTabata();
+      widget.changeBottomNavBarVisibility();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return widget.tabataInfo.tabataTrainingIsOn
         ? FloatingActionButton(
             onPressed: () {
-              setState(() {
-                widget.tabataInfo.startTabata();
-              });
+              onPressFunction();
             },
             materialTapTargetSize: MaterialTapTargetSize.padded,
             backgroundColor: Color(0xffF25F5C),
@@ -34,7 +41,7 @@ class _StartTimerState extends State<StartTimer> {
         : FloatingActionButton(
             onPressed: () {
               setState(() {
-                widget.tabataInfo.startTabata();
+                onPressFunction();
               });
             },
             materialTapTargetSize: MaterialTapTargetSize.padded,
