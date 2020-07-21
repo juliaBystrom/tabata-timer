@@ -17,39 +17,18 @@ class ClockDisplay extends StatefulWidget {
 
 class _ClockDisplayState extends State<ClockDisplay> {
   static Color textColor = const Color(0xff182825);
+  static Color textColorRed = const Color(0xffF25F5C);
 
   double fontSizeMinutes;
   double fontSizeSeconds;
 
-  TextStyle minutesTextStyle = GoogleFonts.squadaOne(
-    fontSize: 110,
-    color: textColor,
-    // backgroundColor: Colors.orange,
-  );
-
-  TextStyle secondsTextStyle = GoogleFonts.squadaOne(
-    fontSize: 230,
-    color: textColor,
-
-    // backgroundColor: Colors.yellow,
-  );
-
-  TextStyle sameTextStyle = GoogleFonts.squadaOne(
-    fontSize: 170,
-    color: textColor,
-
-    // backgroundColor: Colors.yellow,
-  );
-
   // Used for Solving an align issue
   TextStyle biggestTextStyle = GoogleFonts.squadaOne(
     fontSize: 230,
-    color: textColor,
   );
-  bool showMinutesBigg = true;
-  bool tempShowMinutesBigg;
-
- 
+  bool showMinutesBigg;
+  bool showRedSecond;
+  bool showRedMinute;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +36,28 @@ class _ClockDisplayState extends State<ClockDisplay> {
     showMinutesBigg =
         ((widget.minutes > 0 && widget.seconds < 5) || widget.seconds > 55);
 
-  
+    TextStyle minutesTextStyle = GoogleFonts.squadaOne(
+      fontSize: 110,
+      color: textColor,
+
+      // color: widget.minutes <= 1 ? textColorRed : textColor,
+    );
+
+    TextStyle secondsTextStyle = GoogleFonts.squadaOne(
+      fontSize: 230,
+      color: widget.seconds <= 3 ? textColorRed : textColor,
+    );
+
+    TextStyle mediumTextStyleMinutes = GoogleFonts.squadaOne(
+      fontSize: 170,
+      color: textColor,
+      // color: widget.minutes <= 1 ? textColorRed : textColor,
+    );
+
+    TextStyle mediumTextStyleSeconds = GoogleFonts.squadaOne(
+      fontSize: 170,
+      color: widget.seconds <= 3 ? textColorRed : textColor,
+    );
 
     String firstDigitSecond =
         widget.seconds.toString().padLeft(2, '0').substring(0, 1);
@@ -97,7 +97,9 @@ class _ClockDisplayState extends State<ClockDisplay> {
               ),
               TableCell(
                 child: AnimatedDefaultTextStyle(
-                  style: showMinutesBigg ? sameTextStyle : minutesTextStyle,
+                  style: showMinutesBigg
+                      ? mediumTextStyleMinutes
+                      : minutesTextStyle,
                   duration: Duration(milliseconds: 500),
                   curve: Curves.bounceOut,
                   textAlign: showMinutesBigg ? TextAlign.start : TextAlign.end,
@@ -109,7 +111,9 @@ class _ClockDisplayState extends State<ClockDisplay> {
               ),
               TableCell(
                 child: AnimatedDefaultTextStyle(
-                  style: showMinutesBigg ? sameTextStyle : minutesTextStyle,
+                  style: showMinutesBigg
+                      ? mediumTextStyleMinutes
+                      : minutesTextStyle,
                   duration: Duration(milliseconds: 500),
                   curve: Curves.bounceOut,
                   textAlign: showMinutesBigg ? TextAlign.end : TextAlign.start,
@@ -129,7 +133,9 @@ class _ClockDisplayState extends State<ClockDisplay> {
               ),
               TableCell(
                 child: AnimatedDefaultTextStyle(
-                  style: showMinutesBigg ? sameTextStyle : secondsTextStyle,
+                  style: showMinutesBigg
+                      ? mediumTextStyleSeconds
+                      : secondsTextStyle,
                   duration: Duration(milliseconds: 500),
                   curve: Curves.bounceOut,
                   textAlign: showMinutesBigg ? TextAlign.end : TextAlign.start,
@@ -140,7 +146,9 @@ class _ClockDisplayState extends State<ClockDisplay> {
               ),
               TableCell(
                 child: AnimatedDefaultTextStyle(
-                  style: showMinutesBigg ? sameTextStyle : secondsTextStyle,
+                  style: showMinutesBigg
+                      ? mediumTextStyleSeconds
+                      : secondsTextStyle,
                   duration: Duration(milliseconds: 500),
                   curve: Curves.bounceOut,
                   textAlign: showMinutesBigg ? TextAlign.start : TextAlign.end,
