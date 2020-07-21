@@ -3,21 +3,28 @@ import 'dart:async';
 import './clockDisplay.dart';
 import 'tabataInfo.dart';
 
-class Start extends StatefulWidget {
+class MainScreen extends StatefulWidget {
   TabtaInfo tabataInfo;
   TabataHandler tabataHandler;
+  int secondsStart;
 
-  Start(TabtaInfo tabataInfo) {
+  bool mainScreenFunctionsSet;
+
+  MainScreen(TabtaInfo tabataInfo) {
     this.tabataInfo = tabataInfo;
     tabataHandler = tabataInfo.tabataHandler;
+    secondsStart = tabataHandler.getActiveTime();
+    mainScreenFunctionsSet = false;
   }
 
   @override
-  _StartState createState() => _StartState();
+  _MainScreenState createState() => _MainScreenState(tabataHandler);
 }
 
-class _StartState extends State<Start> {
+class _MainScreenState extends State<MainScreen> {
   static const duration = const Duration(seconds: 1);
+
+  TabataHandler tabataHandler;
 
   int secondsPassed;
   bool isActive = false;
@@ -25,36 +32,69 @@ class _StartState extends State<Start> {
   bool isWorking;
   bool isResting;
 
-  @override
-  void initState() {
-    secondsPassed = widget.tabataHandler.getActiveTime();
-    super.initState();
+  _MainScreenState(this.tabataHandler) {
+    secondsPassed = tabataHandler.getActiveTime();
+    print("consructor of mainscreenstate sp: $secondsPassed");
   }
+
+  /*  @override
+  void initState() {
+    tabataHandler = widget.tabataInfo.tabataHandler;
+    secondsPassed = tabataHandler.getActiveTime();
+    super.initState();
+  } */
 
   void handleTick() {
     if (isActive) {
       setState(() {
         secondsPassed = secondsPassed - 1;
+        print("secondsPassed = secondsPassed - 1 : $secondsPassed");
+        // Because the timer will count from inputed time to 1, the check secondsPassed <= 0 will make 
+        // the timer not display 0
+        if (secondsPassed <= 0) {
+          print("sP less than 0");
+          updateTabataProgress();
+        }
       });
-      if (secondsPassed <= 0) {
-        updateTabataProgress();
-      }
     }
   }
 
   void updateTabataProgress() {
     // OBS updateInfo need to be valled before geting the time
-    widget.tabataHandler.updateInfo();
-    secondsPassed = widget.tabataHandler.getActiveTime();
+    tabataHandler.updateInfo();
+
+    // The timer will count from inputed time to 1 and then reset. Intead of inputtime-1 to 0.
+    // the +1 is because the timer will start with subtracting 1.
+    secondsPassed = tabataHandler.getActiveTime() + 1;
+    print(
+        "secondsPassed = widget.tabataHandler.getActiveTime() : $secondsPassed");
+
     // Maybe useless bool
     isWorking = !isWorking;
     isResting = !isResting;
   }
 
-  void initTabata() {
+/*   void initTabata() {
     isWorking = widget.tabataHandler.isWorking;
     isResting = widget.tabataHandler.isResting;
-    secondsPassed = widget.tabataHandler.getActiveTime();
+    // secondsPassed = widget.tabataHandler.getActiveTime();
+  } */
+
+  void newTabataInfo() {
+    tabataHandler = widget.tabataInfo.getTabataHandler();
+
+    setState(() {
+      secondsPassed = tabataHandler.getActiveTime();
+    });
+    print("New Tabata ready to start");
+  }
+
+  void startTabata() {
+    // initTabata();
+    setState(() {
+      isActive = !isActive;
+    });
+    print("Tabata started");
   }
 
   @override
@@ -69,6 +109,11 @@ class _StartState extends State<Start> {
       timer = Timer.periodic(duration, (Timer t) {
         handleTick();
       });
+    }
+
+    if (!widget.mainScreenFunctionsSet) {
+      widget.tabataInfo.setMainScreenFunctions(newTabataInfo, startTabata);
+      widget.mainScreenFunctionsSet = true;
     }
 
     // int hours = secondsPassed ~/ (60 * 60);
@@ -88,7 +133,7 @@ class _StartState extends State<Start> {
             child: Text(isActive ? 'STOP' : 'START'),
             onPressed: () {
               setState(() {
-                initTabata();
+                // initTabata();
                 isActive = !isActive;
               });
             },

@@ -1,23 +1,13 @@
 import 'package:flutter/material.dart';
 import '../tabataInfo.dart';
 import './timeChooser.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../StyleCollection/textStyles.dart';
+
 
 
 class SettingsPane extends StatefulWidget {
   final TabtaInfo tabataInfo;
   SettingsPane(this.tabataInfo);
-
-  final TextStyle textStyle = GoogleFonts.squadaOne(
-    // fontSize: 20,
-    color: Color(0xff182825),
-  );
-
-  final TextStyle textStyleNumbers = GoogleFonts.cutiveMono(
-    // Link: https://fonts.google.com/specimen/Cutive+Mono?preview.text_type=numerals&category=Monospace&sort=popularity&preview.size=66#standard-styles
-    // fontSize: 20,
-    color: Color(0xff182825),
-  );
 
   @override
   _SettingsPaneState createState() => _SettingsPaneState();
@@ -46,7 +36,7 @@ class _SettingsPaneState extends State<SettingsPane> {
             Text(
               "Cycles:",
               textScaleFactor: 2,
-              style: widget.textStyle,
+              style: TextStyles().textStyle,
 
             ),
             Row(
@@ -66,7 +56,7 @@ class _SettingsPaneState extends State<SettingsPane> {
                 Text(
                   "${widget.tabataInfo.nrOfCycles.toString().padLeft(2, '0')}",
                   textScaleFactor: 3,
-                  style: widget.textStyleNumbers,
+                  style: TextStyles().textStyleNumbers,
                 ),
                 FlatButton(
                   shape: CircleBorder(),
@@ -91,7 +81,7 @@ class _SettingsPaneState extends State<SettingsPane> {
             Text(
               "Tabatas:",
               textScaleFactor: 2,
-              style: widget.textStyle,
+              style: TextStyles().textStyle,
             ),
             Row(
               // mainAxisAlignment: MainAxisAlignment.center,
@@ -111,7 +101,7 @@ class _SettingsPaneState extends State<SettingsPane> {
                 Text(
                   "${widget.tabataInfo.nrOfTabatas.toString().padLeft(2, '0')}",
                   textScaleFactor: 3,
-                  style: widget.textStyleNumbers,
+                  style: TextStyles().textStyleNumbers,
                 ),
                 FlatButton(
                   shape: CircleBorder(),

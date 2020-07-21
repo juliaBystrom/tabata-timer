@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 import '../tabataInfo.dart';
 import './settingsPane.dart';
 import 'dart:async';
-import '../Painters/BottomSheetPainer.dart';
+// import '../Painters/BottomSheetPainer.dart';
 
-class FloatingActionButtonBottomSettingsSheet extends StatefulWidget {
+class ButtonSettingsSheet extends StatefulWidget {
   final TabtaInfo tabataInfo;
-  FloatingActionButtonBottomSettingsSheet(this.tabataInfo);
+  ButtonSettingsSheet(this.tabataInfo);
   @override
-  _FloatingActionButtonBottomSettingsSheetState createState() =>
-      _FloatingActionButtonBottomSettingsSheetState();
+  _ButtonSettingsSheetState createState() => _ButtonSettingsSheetState();
 }
 
-class _FloatingActionButtonBottomSettingsSheetState
-    extends State<FloatingActionButtonBottomSettingsSheet> {
+class _ButtonSettingsSheetState extends State<ButtonSettingsSheet> {
   bool showButton = true;
 
   @override
   Widget build(BuildContext context) {
     return showButton
-        ? FloatingActionButton(
+        ? FlatButton(
             // backgroundColor: Colors.green,
             onPressed: () {
               var bottomSheetController = showModalBottomSheet(
@@ -58,6 +56,10 @@ class _FloatingActionButtonBottomSettingsSheetState
                 showFoatingActionButton(true);
                 // Updates the tabataHandler with the new settings
                 widget.tabataInfo.updateTabataHandler();
+   /*              while(!widget.tabataInfo.mainScreenFunctionsSet){
+                  // waint until the function is set in the tabataInfo 
+                } */
+                widget.tabataInfo.newTabataInfo();
                 print("stängd modal bottom sheet");
               });
 
@@ -68,7 +70,12 @@ class _FloatingActionButtonBottomSettingsSheetState
 
               }); */
             },
-          )
+            shape: CircleBorder(),
+            color: Colors.pink,
+            child: Container(
+              child: Text("Settings"),
+            ),
+            )
         : Container();
   }
 

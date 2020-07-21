@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+// import './StyleCollection/textStyles.dart';
 
 // import 'dart:async';
 // Link to font familey https://fonts.google.com/specimen/Squada+One?preview.text=Time+23:34+&preview.text_type=custom&category=Display&sort=popularity&sidebar.open&selection.family=Squada+One#license
@@ -20,15 +21,15 @@ class _ClockDisplayState extends State<ClockDisplay> {
     fontSize: 150,
   );
 
-  final TextStyle secondsTextStyle =  GoogleFonts.squadaOne(
+  final TextStyle secondsTextStyle = GoogleFonts.squadaOne(
     fontSize: 150,
     // color: Colors.cyanAccent,
   );
 
-   
-
   @override
   Widget build(BuildContext context) {
+    print(
+        "Clock Display state built with min ${widget.minutes} : sec ${widget.seconds}");
     return Container(
       child: RichText(
         text: TextSpan(

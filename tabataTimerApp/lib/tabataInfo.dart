@@ -4,14 +4,38 @@ class TabtaInfo {
   int nrOfCycles;
   int nrOfTabatas;
   TabataHandler tabataHandler;
+  Function newTabataInfo;
+  Function startTabata;
+
+  // bool used if there is an need to check if the functions newTabataInfo and startTabata have
+  // been set before acsessed
+  bool mainScreenFunctionsSet;
+
+  bool tabataTrainingIsOn;
 
   TabtaInfo() {
     secondsWorkTime = 20;
     secondsRestTime = 10;
     nrOfCycles = 10;
     nrOfTabatas = 3;
+    mainScreenFunctionsSet = false;
     tabataHandler = new TabataHandler(
         secondsWorkTime, secondsRestTime, nrOfCycles, nrOfTabatas);
+
+    // Initilizing the Functions to diminish acsessing null function issues
+    newTabataInfo = () => {};
+    startTabata = () => {};
+    tabataTrainingIsOn = false;
+  }
+
+  void setMainScreenFunctions(Function f, Function g) {
+    newTabataInfo = f;
+    startTabata = () {
+      g();
+      tabataTrainingIsOn = !tabataTrainingIsOn;
+      // tabataHandler.thisTabataIsOn = !tabataHandler.thisTabataIsOn;
+    };
+    mainScreenFunctionsSet = true;
   }
 
   void changeSecondsWorkTime(int s) {
@@ -38,15 +62,13 @@ class TabtaInfo {
     }
   }
 
-  // Might be useless function
-  TabataHandler getNewTabataHandler() {
-    return new TabataHandler(
+  void updateTabataHandler() {
+    tabataHandler = new TabataHandler(
         secondsWorkTime, secondsRestTime, nrOfCycles, nrOfTabatas);
   }
 
-  void updateTabataHandler() {
-    tabataHandler = TabataHandler(
-        secondsWorkTime, secondsRestTime, nrOfCycles, nrOfTabatas);
+  TabataHandler getTabataHandler() {
+    return tabataHandler;
   }
 }
 
@@ -60,6 +82,7 @@ class TabataHandler {
   bool isResting;
   bool finishWorkout;
 
+
   TabataHandler(this.secondsWorkTime, this.secondsRestTime, this.nrOfCycles,
       this.nrOfTabatas) {
     // Start with workout
@@ -67,6 +90,7 @@ class TabataHandler {
     isResting = false;
     nrOfCyclesInTabata = nrOfCycles;
     finishWorkout = false;
+
   }
 
   // Depending on the activity (resting or Working) this function gives
@@ -79,6 +103,7 @@ class TabataHandler {
       return secondsRestTime;
     } else {
       // error
+      print("Error 999");
       return 999;
     }
   }
