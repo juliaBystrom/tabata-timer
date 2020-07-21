@@ -16,34 +16,48 @@ class ClockDisplay extends StatefulWidget {
 }
 
 class _ClockDisplayState extends State<ClockDisplay> {
-  final Color textColor = Color(0xff182825);
+  static Color textColor = const Color(0xff182825);
 
   double fontSizeMinutes;
   double fontSizeSeconds;
 
+  TextStyle minutesTextStyle = GoogleFonts.squadaOne(
+    fontSize: 110,
+    color: textColor,
+    // backgroundColor: Colors.orange,
+  );
+
+  TextStyle secondsTextStyle = GoogleFonts.squadaOne(
+    fontSize: 230,
+    color: textColor,
+
+    // backgroundColor: Colors.yellow,
+  );
+
+  TextStyle sameTextStyle = GoogleFonts.squadaOne(
+    fontSize: 170,
+    color: textColor,
+
+    // backgroundColor: Colors.yellow,
+  );
+
+  // Used for Solving an align issue
+  TextStyle biggestTextStyle = GoogleFonts.squadaOne(
+    fontSize: 230,
+    color: textColor,
+  );
+  bool showMinutesBigg = true;
+  bool tempShowMinutesBigg;
+
+ 
+
   @override
   Widget build(BuildContext context) {
     // True when nr of minutes have recently or is about to change, also when the tabata is new and the time is close to one minute
-    bool showMinutesBigg =
+    showMinutesBigg =
         ((widget.minutes > 0 && widget.seconds < 5) || widget.seconds > 55);
 
-    fontSizeMinutes = showMinutesBigg ? 170 : 110;
-    fontSizeSeconds = showMinutesBigg ? 170 : 230;
-
-    TextStyle minutesTextStyle = GoogleFonts.squadaOne(
-      fontSize: fontSizeMinutes,
-      // backgroundColor: Colors.orange,
-    );
-
-    TextStyle secondsTextStyle = GoogleFonts.squadaOne(
-      fontSize: fontSizeSeconds,
-      // backgroundColor: Colors.yellow,
-    );
-
-    // Solving an align issue
-    TextStyle biggestTextStyle = GoogleFonts.squadaOne(
-      fontSize: 230,
-    );
+  
 
     String firstDigitSecond =
         widget.seconds.toString().padLeft(2, '0').substring(0, 1);
@@ -58,6 +72,8 @@ class _ClockDisplayState extends State<ClockDisplay> {
     return Container(
         color: Colors.blue,
         padding: EdgeInsets.all(10),
+        // duration: Duration(microseconds: 2000),
+        // curve: Curves.fastOutSlowIn,
         child: Table(
           // columnWidths: ,
           border: TableBorder.all(),
@@ -80,18 +96,26 @@ class _ClockDisplayState extends State<ClockDisplay> {
                 ),
               ),
               TableCell(
-                child: Text(
-                  firstDigitMinute,
-                  style: minutesTextStyle,
-                  //TtextAlign: showMinutesBigg ? TextAlign.start : TextAlign.end,
+                child: AnimatedDefaultTextStyle(
+                  style: showMinutesBigg ? sameTextStyle : minutesTextStyle,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.bounceOut,
                   textAlign: showMinutesBigg ? TextAlign.start : TextAlign.end,
+                  child: Text(
+                    firstDigitMinute,
+                    //TtextAlign: showMinutesBigg ? TextAlign.start : TextAlign.end,
+                  ),
                 ),
               ),
               TableCell(
-                child: Text(
-                  secondDigitMinute,
-                  style: minutesTextStyle,
+                child: AnimatedDefaultTextStyle(
+                  style: showMinutesBigg ? sameTextStyle : minutesTextStyle,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.bounceOut,
                   textAlign: showMinutesBigg ? TextAlign.end : TextAlign.start,
+                  child: Text(
+                    secondDigitMinute,
+                  ),
                 ),
               ),
               TableCell(
@@ -104,17 +128,25 @@ class _ClockDisplayState extends State<ClockDisplay> {
                 ),
               ),
               TableCell(
-                child: Text(
-                  firstDigitSecond,
-                  style: secondsTextStyle,
+                child: AnimatedDefaultTextStyle(
+                  style: showMinutesBigg ? sameTextStyle : secondsTextStyle,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.bounceOut,
                   textAlign: showMinutesBigg ? TextAlign.end : TextAlign.start,
+                  child: Text(
+                    firstDigitSecond,
+                  ),
                 ),
               ),
               TableCell(
-                child: Text(
-                  secondDigitSecond,
-                  style: secondsTextStyle,
+                child: AnimatedDefaultTextStyle(
+                  style: showMinutesBigg ? sameTextStyle : secondsTextStyle,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.bounceOut,
                   textAlign: showMinutesBigg ? TextAlign.start : TextAlign.end,
+                  child: Text(
+                    secondDigitSecond,
+                  ),
                 ),
               ),
             ])
