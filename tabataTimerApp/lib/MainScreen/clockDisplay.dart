@@ -36,10 +36,11 @@ class _ClockDisplayState extends State<ClockDisplay> {
     showMinutesBigg =
         ((widget.minutes > 0 && widget.seconds < 5) || widget.seconds > 55);
 
+
+    // Textstyles for the digits
     TextStyle minutesTextStyle = GoogleFonts.squadaOne(
       fontSize: 110,
       color: textColor,
-
       // color: widget.minutes <= 1 ? textColorRed : textColor,
     );
 
@@ -72,11 +73,10 @@ class _ClockDisplayState extends State<ClockDisplay> {
     return Container(
         color: Colors.blue,
         padding: EdgeInsets.all(10),
-        // duration: Duration(microseconds: 2000),
-        // curve: Curves.fastOutSlowIn,
+      
         child: Table(
-          // columnWidths: ,
-          border: TableBorder.all(),
+          // Uncomment the line above to see the borders of the digits
+          // border: TableBorder.all(),
           textBaseline: TextBaseline.alphabetic,
           defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
 

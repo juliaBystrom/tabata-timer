@@ -3,6 +3,9 @@ import './MainScreen/mainScreen.dart';
 import 'SettingsWidgets/ButtonSettingsSheet.dart';
 import 'tabataInfo.dart';
 import './StartButton/startTimer.dart';
+import './StartButton/startButton.dart';
+import './StartButton/stopButton.dart';
+import './StartButton/pausButton.dart';
 
 class Home extends StatefulWidget {
   final TabtaInfo tabataInfo = new TabtaInfo();
@@ -22,45 +25,71 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    var pausStopButtons = Table(
+      columnWidths: {
+        0: FractionColumnWidth(0.5),
+        1: FractionColumnWidth(0.5),
+      },
+      children: [
+        TableRow(children: [
+          TableCell(
+            child: Container(
+              height: 70,
+              child: StopButton(
+                  widget.tabataInfo, changeBottomNavBarVisibility, size),
+            ),
+          ),
+          TableCell(
+            child: Container(
+              height: 70,
+              child: PausButton(
+                  widget.tabataInfo, changeBottomNavBarVisibility, size),
+            ),
+          ),
+        ]),
+      ],
+    );
+
     return Scaffold(
       body: MainScreen(widget.tabataInfo),
       backgroundColor: Color(0xffFFF8F0),
       bottomNavigationBar: BottomAppBar(
-        //Color(0xff340068),
-
-        shape: CircularNotchedRectangle(),
         color: Color(0xff340068),
-        // elevation: 5,
 
-        notchMargin: 7.0,
         child: Container(
-          height: 70,
-          // color: Color(0xff340068),
-          // padding: EdgeInsets.all(10),
-          child: widget.showNavBar
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FlatButton(
-                      onPressed: () => {},
-                      child: Text("Button"),
-                    ),
-                    ButtonSettingsSheet(widget.tabataInfo),
-                  ],
-                )
-              : Container(
-                  // empty container
-                  ),
+          height: 140,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                height: 70,
+                child: widget.tabataInfo.tabataTrainingIsOn
+                    ? pausStopButtons
+                    : StartButton(
+                        widget.tabataInfo, changeBottomNavBarVisibility, size),
+              ),
+              widget.showNavBar
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FlatButton(
+                          onPressed: () => {},
+                          child: Text("Button"),
+                        ),
+                        ButtonSettingsSheet(widget.tabataInfo),
+                      ],
+                    )
+                  : Container(
+                      // empty container
+                      ),
+            ],
+          ),
         ),
       ),
-      floatingActionButton: Container(
-        height: 160.0,
-        width: 160.0,
-        child: FittedBox(
-          child: StartTimer(widget.tabataInfo, changeBottomNavBarVisibility),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // extendBody: true,
     );
   }
 }

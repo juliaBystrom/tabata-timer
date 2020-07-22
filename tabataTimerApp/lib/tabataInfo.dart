@@ -13,26 +13,44 @@ class TabtaInfo {
 
   bool tabataTrainingIsOn;
 
+  bool finishedWorkout;
+
+  bool tabataTrainingIsPaused;
+
   TabtaInfo() {
     secondsWorkTime = 20;
     secondsRestTime = 10;
     nrOfCycles = 10;
     nrOfTabatas = 3;
     mainScreenFunctionsSet = false;
-    tabataHandler = new TabataHandler(
-        secondsWorkTime, secondsRestTime, nrOfCycles, nrOfTabatas);
+    tabataHandler = new TabataHandler(secondsWorkTime, secondsRestTime,
+        nrOfCycles, nrOfTabatas, finishWorkout);
 
     // Initilizing the Functions to diminish acsessing null function issues
     newTabataInfo = () => {};
     startTabata = () => {};
+    finishedWorkout = false;
     tabataTrainingIsOn = false;
+
+    tabataTrainingIsPaused = false;
+  }
+
+  void finishWorkout() {
+    finishedWorkout = true;
+    tabataTrainingIsPaused = false;
+    // Resets the tabata progres
+    updateTabataHandler();
   }
 
   void setMainScreenFunctions(Function f, Function g) {
     newTabataInfo = f;
-    startTabata = () {
-      g();
-      tabataTrainingIsOn = !tabataTrainingIsOn;
+    startTabata = (bool finish) {
+      g(finish);
+      if (!finish) {
+        tabataTrainingIsOn = !tabataTrainingIsOn;
+      } else {
+        tabataTrainingIsOn = false;
+      }
       // tabataHandler.thisTabataIsOn = !tabataHandler.thisTabataIsOn;
     };
     mainScreenFunctionsSet = true;
@@ -63,8 +81,8 @@ class TabtaInfo {
   }
 
   void updateTabataHandler() {
-    tabataHandler = new TabataHandler(
-        secondsWorkTime, secondsRestTime, nrOfCycles, nrOfTabatas);
+    tabataHandler = new TabataHandler(secondsWorkTime, secondsRestTime,
+        nrOfCycles, nrOfTabatas, finishWorkout);
   }
 
   TabataHandler getTabataHandler() {
@@ -80,17 +98,15 @@ class TabataHandler {
   int nrOfCyclesInTabata;
   bool isWorking;
   bool isResting;
-  bool finishWorkout;
 
+  Function finishWorkout;
 
   TabataHandler(this.secondsWorkTime, this.secondsRestTime, this.nrOfCycles,
-      this.nrOfTabatas) {
+      this.nrOfTabatas, this.finishWorkout) {
     // Start with workout
     isWorking = true;
     isResting = false;
     nrOfCyclesInTabata = nrOfCycles;
-    finishWorkout = false;
-
   }
 
   // Depending on the activity (resting or Working) this function gives
@@ -124,7 +140,7 @@ class TabataHandler {
 
     if (nrOfTabatas <= 0) {
       // Now all tabatas have been done
-      finishWorkout = true;
+      finishWorkout();
     }
 
     // Switch from work to rest

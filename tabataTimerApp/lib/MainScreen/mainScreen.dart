@@ -49,7 +49,7 @@ class _MainScreenState extends State<MainScreen> {
       setState(() {
         secondsPassed = secondsPassed - 1;
         print("secondsPassed = secondsPassed - 1 : $secondsPassed");
-        // Because the timer will count from inputed time to 1, the check secondsPassed <= 0 will make 
+        // Because the timer will count from inputed time to 1, the check secondsPassed <= 0 will make
         // the timer not display 0
         if (secondsPassed <= 0) {
           print("sP less than 0");
@@ -83,10 +83,17 @@ class _MainScreenState extends State<MainScreen> {
     print("New Tabata ready to start");
   }
 
-  void startTabata() {
+  void startTabata(bool finish) {
     // initTabata();
+
     setState(() {
-      isActive = !isActive;
+      if (!finish) {
+        isActive = !isActive;
+      } else {
+        secondsPassed = widget.tabataInfo.tabataHandler.getActiveTime();
+        isActive = false;
+        print("tabata finished");
+      }
     });
     print("Tabata started");
   }
@@ -119,7 +126,6 @@ class _MainScreenState extends State<MainScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ClockDisplay(minutes, seconds),
-          
         ],
       ),
     );
