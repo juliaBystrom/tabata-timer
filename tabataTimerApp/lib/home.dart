@@ -76,7 +76,6 @@ class _HomeState extends State<Home> {
                 const Color(0xffff930f),
                 const Color(0xfffff95b),
               ],
-
             ),
           ),
           child: Column(

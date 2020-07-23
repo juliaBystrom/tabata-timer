@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../tabataInfo.dart';
-import '../StyleCollection/DiamondPainter.dart';
 import '../StyleCollection/textStyles.dart';
 import 'buttonTimeChange.dart';
 
@@ -20,6 +19,12 @@ class TimeChooser extends StatefulWidget {
 
 class _TimeChooserState extends State<TimeChooser> {
   int seconds;
+
+  // Because Resting is in the middle
+  Border borderResting = Border(
+    right: BorderSide(color: Colors.black54, width: 2),
+    left: BorderSide(color: Colors.black54, width: 2),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +50,14 @@ class _TimeChooserState extends State<TimeChooser> {
       // color: Colors.pink,
       flex: 1,
       child: Container(
-        color: Colors.green,
         alignment: Alignment.center,
+        // margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        decoration: BoxDecoration(
+          // color: Color(0x2f7DCFB6),
+          border: widget.tabataStatus == TabataStatus.resting
+              ? borderResting
+              : Border(),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,7 +82,7 @@ class _TimeChooserState extends State<TimeChooser> {
                       }, Icons.add, "Add one minute", true),
                       Text(
                         "${(seconds ~/ 60).toString().padLeft(2, '0')}",
-                        textScaleFactor: 3,
+                        textScaleFactor: 2,
                         style: TextStyles().textStyleNumbers,
                       ),
                       ButtonTimeChange(() {
@@ -84,7 +95,7 @@ class _TimeChooserState extends State<TimeChooser> {
                 ),
                 Text(
                   ":",
-                  textScaleFactor: 3,
+                  textScaleFactor: 2,
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -97,7 +108,7 @@ class _TimeChooserState extends State<TimeChooser> {
                       }, Icons.add, "Add one second", true),
                       Text(
                         "${(seconds % 60).toString().padLeft(2, '0')}",
-                        textScaleFactor: 3,
+                        textScaleFactor: 2,
                         style: TextStyles().textStyleNumbers,
                       ),
                       ButtonTimeChange(() {

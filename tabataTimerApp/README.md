@@ -11,6 +11,11 @@ Color(0xff5200a3)
 #### White: 
 Color(0xffFFF8F0)
 
+#### Blue:
+Color(0xff7DCFB6)
+
+
+
 ### Gradients:
 
 
@@ -59,6 +64,7 @@ RadialGradient(
 Color notes:
 Colors:
 0xff998888
+
 
 gradient: LinearGradient(
             begin: pointUp ? Alignment.bottomCenter: Alignment.topCenter,

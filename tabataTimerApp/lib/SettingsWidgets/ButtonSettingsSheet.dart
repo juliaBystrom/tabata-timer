@@ -18,32 +18,38 @@ class _ButtonSettingsSheetState extends State<ButtonSettingsSheet> {
     var bottomSheetController = showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        height: 500,
-        decoration: BoxDecoration(
-
-          gradient: RadialGradient(
-            colors: [
-              const Color(0xffFFF8F0),
-              const Color(0xffFFF8F0),
-              Colors.black,
-            ],
-            radius: 1.8,
-            center: FractionalOffset(0.5, 1),
+      isScrollControlled: true,
+      builder: (context) => Wrap(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                colors: [
+                  const Color(0xffFFF8F0),
+                  const Color(0xffFFF8F0),
+                  Colors.black,
+                ],
+                focal: Alignment.center,
+                radius: 1.8,
+                center: FractionalOffset(0.5, 1),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                )
+              ],
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(50),
+                topRight: Radius.circular(50),
+              ),
+            ),
+            padding: EdgeInsets.all(20),
+            // alignment: Alignment.center,
+            //constraints: BoxConstraints.expand(height: 900),
+            child: SettingsPane(widget.tabataInfo),
           ),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 10,
-              spreadRadius: 2,
-            )
-          ],
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(50),
-            topRight: Radius.circular(50),
-          ),
-        ),
-        padding: EdgeInsets.all(20),
-        child: SettingsPane(widget.tabataInfo),
+        ],
       ),
     );
     showFoatingActionButton(false);
@@ -87,5 +93,3 @@ class _ButtonSettingsSheetState extends State<ButtonSettingsSheet> {
     });
   }
 }
-
-
