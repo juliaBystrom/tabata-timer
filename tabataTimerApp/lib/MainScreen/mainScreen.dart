@@ -85,7 +85,6 @@ class _MainScreenState extends State<MainScreen> {
 
   void startTabata(bool finish) {
     // initTabata();
-
     setState(() {
       if (!finish) {
         isActive = !isActive;
@@ -96,6 +95,20 @@ class _MainScreenState extends State<MainScreen> {
       }
     });
     print("Tabata started");
+  }
+
+  void timerOnOff() {
+    setState(() {
+      isActive = !isActive;
+    });
+  }
+
+  void timerFinish() {
+    setState(() {
+      secondsPassed = widget.tabataInfo.tabataHandler.getActiveTime();
+      isActive = false;
+      print("tabata finished");
+    });
   }
 
   @override
@@ -113,7 +126,9 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     if (!widget.mainScreenFunctionsSet) {
-      widget.tabataInfo.setMainScreenFunctions(newTabataInfo, startTabata);
+      // widget.tabataInfo.setMainScreenFunctions(newTabataInfo, startTabata);
+      widget.tabataInfo.setMainScreenFunctions(newTabataInfo, timerOnOff,timerFinish);
+      
       widget.mainScreenFunctionsSet = true;
     }
 

@@ -1,4 +1,17 @@
+enum WorkoutStatus {
+  notStarted,
+  tabataOn,
+  finished,
+}
+
+enum TabataStatus {
+  preparing,
+  working,
+  resting,
+}
+
 class TabtaInfo {
+  int secondsPrepTime;
   int secondsWorkTime;
   int secondsRestTime;
   int nrOfCycles;
@@ -7,53 +20,76 @@ class TabtaInfo {
   Function newTabataInfo;
   Function startTabata;
 
+  Function timerOnOff;
+  Function timerFinish;
+
   // bool used if there is an need to check if the functions newTabataInfo and startTabata have
   // been set before acsessed
   bool mainScreenFunctionsSet;
 
-  bool tabataTrainingIsOn;
-
-  bool finishedWorkout;
-
   bool tabataTrainingIsPaused;
 
+  WorkoutStatus status;
+
   TabtaInfo() {
+    // Default values
+    secondsPrepTime = 10;
     secondsWorkTime = 20;
     secondsRestTime = 10;
     nrOfCycles = 10;
     nrOfTabatas = 3;
+
+    // Flag for setting functions
     mainScreenFunctionsSet = false;
-    tabataHandler = new TabataHandler(secondsWorkTime, secondsRestTime,
-        nrOfCycles, nrOfTabatas, finishWorkout);
+
+    // Creates Default TabataHandler
+    tabataHandler = new TabataHandler(secondsPrepTime, secondsWorkTime,
+        secondsRestTime, nrOfCycles, nrOfTabatas, finishWorkout);
 
     // Initilizing the Functions to diminish acsessing null function issues
     newTabataInfo = () => {};
     startTabata = () => {};
-    finishedWorkout = false;
-    tabataTrainingIsOn = false;
+    timerOnOff = () => {};
+    timerFinish = () => {};
+
+    status = WorkoutStatus.notStarted;
 
     tabataTrainingIsPaused = false;
   }
 
   void finishWorkout() {
-    finishedWorkout = true;
+    timerFinish();
     tabataTrainingIsPaused = false;
+    status = WorkoutStatus.finished;
     // Resets the tabata progres
     updateTabataHandler();
   }
 
-  void setMainScreenFunctions(Function f, Function g) {
+  void pausWorkout() {
+    tabataTrainingIsPaused = !tabataTrainingIsPaused;
+    timerOnOff();
+  }
+
+  void startWorkout() {
+    status = WorkoutStatus.tabataOn;
+    timerOnOff();
+  }
+
+  bool workoutStarted() {
+    return (status == WorkoutStatus.tabataOn) ? true : false;
+  }
+
+  void setMainScreenFunctions(Function f, Function g, Function h) {
     newTabataInfo = f;
-    startTabata = (bool finish) {
-      g(finish);
-      if (!finish) {
-        tabataTrainingIsOn = !tabataTrainingIsOn;
-      } else {
-        tabataTrainingIsOn = false;
-      }
-      // tabataHandler.thisTabataIsOn = !tabataHandler.thisTabataIsOn;
-    };
+    timerOnOff = g;
+    timerFinish = h;
     mainScreenFunctionsSet = true;
+  }
+
+  void changeSecondsPrepTime(int s) {
+    if (0 <= (secondsPrepTime + s)) {
+      secondsPrepTime = secondsPrepTime + s;
+    }
   }
 
   void changeSecondsWorkTime(int s) {
@@ -81,8 +117,8 @@ class TabtaInfo {
   }
 
   void updateTabataHandler() {
-    tabataHandler = new TabataHandler(secondsWorkTime, secondsRestTime,
-        nrOfCycles, nrOfTabatas, finishWorkout);
+    tabataHandler = new TabataHandler(secondsPrepTime, secondsWorkTime,
+        secondsRestTime, nrOfCycles, nrOfTabatas, finishWorkout);
   }
 
   TabataHandler getTabataHandler() {
@@ -91,70 +127,77 @@ class TabtaInfo {
 }
 
 class TabataHandler {
+  int secondsPrepTime;
   int secondsWorkTime;
   int secondsRestTime;
   int nrOfCycles;
   int nrOfTabatas;
-  int nrOfCyclesInTabata;
-  bool isWorking;
-  bool isResting;
+
+  int nrOfActiveTabata;
+  int nrOfActiveCycle;
+  TabataStatus tabataStatus;
 
   Function finishWorkout;
 
-  TabataHandler(this.secondsWorkTime, this.secondsRestTime, this.nrOfCycles,
-      this.nrOfTabatas, this.finishWorkout) {
+  TabataHandler(
+      this.secondsPrepTime,
+      this.secondsWorkTime,
+      this.secondsRestTime,
+      this.nrOfCycles,
+      this.nrOfTabatas,
+      this.finishWorkout) {
     // Start with workout
-    isWorking = true;
-    isResting = false;
-    nrOfCyclesInTabata = nrOfCycles;
+    tabataStatus = TabataStatus.working;
+
+    nrOfActiveTabata = nrOfTabatas;
+    nrOfActiveCycle = nrOfCycles;
   }
 
   // Depending on the activity (resting or Working) this function gives
   // the total nr of secondsds. OBS when going to the next activity
   // updateInfo need to be called before
   int getActiveTime() {
-    if (isWorking) {
-      return secondsWorkTime;
-    } else if (isResting) {
-      return secondsRestTime;
-    } else {
-      // error
-      print("Error 999");
-      return 999;
+    switch (tabataStatus) {
+      case TabataStatus.working:
+        return secondsWorkTime;
+        break;
+      case TabataStatus.resting:
+        return secondsRestTime;
+        break;
+      case TabataStatus.preparing:
+        return secondsPrepTime;
+      default:
+        {
+          print("error: tabataInfo: getActiveTime");
+          return 999;
+        }
     }
   }
 
   // Should be called when the timer have gone to 0. Updates the current progress
   // of the tabata. OBS should be called before getActiveTime when transitioning to an another activity
   void updateInfo() {
-    if (isWorking) {
-      // Nothing to implement now
-    } else if (isResting) {
-      nrOfCyclesInTabata--;
+    if (tabataStatus == TabataStatus.working) {
+      tabataStatus = TabataStatus.resting;
+    } else if (tabataStatus == TabataStatus.resting) {
+      nrOfActiveCycle--;
+      if (nrOfActiveCycle <= 0) {
+        // Now one tabata have been done
+        nrOfActiveTabata--;
+        // When an new Tabata is started the number of cycles need to be reseted
+        nrOfActiveCycle = nrOfCycles;
+        // New tabata starts with preparing time
+        tabataStatus = TabataStatus.preparing;
+      } else {
+        tabataStatus = TabataStatus.working;
+      }
+    } else if (tabataStatus == TabataStatus.preparing) {
+      tabataStatus = TabataStatus.working;
     }
 
-    if (nrOfCyclesInTabata <= 0) {
-      // Now one tabata have been done
-      nrOfTabatas--;
-    }
-
-    if (nrOfTabatas <= 0) {
+    if (nrOfActiveTabata <= 0) {
       // Now all tabatas have been done
       finishWorkout();
-    }
-
-    // Switch from work to rest
-    // TO DO implement prepere state between tabatas
-    _switchRestWork();
-  }
-
-  // function that switches from working to resting state
-  void _switchRestWork() {
-    isWorking = !isWorking;
-    isResting = !isResting;
-
-    if (isResting == isWorking) {
-      print("Error: isResting and isWorking is the same");
     }
   }
 }

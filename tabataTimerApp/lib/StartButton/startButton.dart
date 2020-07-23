@@ -17,7 +17,9 @@ class StartButton extends StatefulWidget {
 class _StartButtonState extends State<StartButton> {
   void onPressFunction() {
     setState(() {
-      widget.tabataInfo.startTabata(false);
+      // widget.tabataInfo.startTabata(false);
+      widget.tabataInfo.startWorkout();
+
       widget.changeBottomNavBarVisibility();
     });
   }
@@ -27,7 +29,6 @@ class _StartButtonState extends State<StartButton> {
     return RaisedButton(
       onPressed: () {
         onPressFunction();
-        print(MediaQuery.of(context).size.width);
       },
       materialTapTargetSize: MaterialTapTargetSize.padded,
       color: Color(0xff31CB00),

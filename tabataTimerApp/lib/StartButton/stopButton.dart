@@ -18,7 +18,8 @@ class StopButton extends StatefulWidget {
 class _StopButtonState extends State<StopButton> {
   void onPressFunction() {
     setState(() {
-      widget.tabataInfo.startTabata(true);
+      //widget.tabataInfo.startTabata(true);
+      // widget.tabataInfo.timerFinish();
       widget.tabataInfo.finishWorkout();
       widget.changeBottomNavBarVisibility();
     });

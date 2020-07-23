@@ -14,69 +14,71 @@ class ButtonSettingsSheet extends StatefulWidget {
 class _ButtonSettingsSheetState extends State<ButtonSettingsSheet> {
   bool showButton = true;
 
+  void buttonPressed() {
+    var bottomSheetController = showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        height: 500,
+        decoration: BoxDecoration(
+
+          gradient: RadialGradient(
+            colors: [
+              const Color(0xffFFF8F0),
+              const Color(0xffFFF8F0),
+              Colors.black,
+            ],
+            radius: 1.8,
+            center: FractionalOffset(0.5, 1),
+          ),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 10,
+              spreadRadius: 2,
+            )
+          ],
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(50),
+            topRight: Radius.circular(50),
+          ),
+        ),
+        padding: EdgeInsets.all(20),
+        child: SettingsPane(widget.tabataInfo),
+      ),
+    );
+    showFoatingActionButton(false);
+    bottomSheetController.whenComplete(() {
+      showFoatingActionButton(true);
+      // Updates the tabataHandler with the new settings
+      widget.tabataInfo.updateTabataHandler();
+      /*              while(!widget.tabataInfo.mainScreenFunctionsSet){
+                  // waint until the function is set in the tabataInfo 
+                } */
+      widget.tabataInfo.newTabataInfo();
+      print("stängd modal bottom sheet");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return showButton
-        ? FlatButton(
-            // backgroundColor: Colors.green,
-            onPressed: () {
-              var bottomSheetController = showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                builder: (context) => Container(
-                  height: 500,
-                  // clipBehavior: ,
-                  //clipBehavior: Clip.antiAliasWithSaveLayer,
-
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      colors: [
-                        const Color(0xff340068),
-                        const Color(0xff5200a3),
-                        // const Color(0xff7000e0),
-                      ],
-                      radius: 0.9,
-                      center: FractionalOffset(0.5, 1),
-                    ),
-                    // shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50),
-                      topRight: Radius.circular(50),
-                    ),
-                    // backgroundBlendMode: BlendMode.xor,
-                    //RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                  ),
-                  padding: EdgeInsets.all(20),
-                  child: SettingsPane(widget.tabataInfo),
+        ? Container(
+            height: 60,
+            width: 60,
+            child: RaisedButton(
+              onPressed: buttonPressed,
+              child: Center(
+                child: Icon(
+                  Icons.settings,
+                  size: 30,
+                  semanticLabel: "Settings",
                 ),
-              );
-
-              showFoatingActionButton(false);
-              bottomSheetController.whenComplete(() {
-                showFoatingActionButton(true);
-                // Updates the tabataHandler with the new settings
-                widget.tabataInfo.updateTabataHandler();
-   /*              while(!widget.tabataInfo.mainScreenFunctionsSet){
-                  // waint until the function is set in the tabataInfo 
-                } */
-                widget.tabataInfo.newTabataInfo();
-                print("stängd modal bottom sheet");
-              });
-
-              /*       bottomSheetController.closed.then((value) {
-              showFoatingActionButton(true);
-                // Updates the tabataHandler with the new settings 
-                widget.tabataInfo.updateTabataHandler();
-
-              }); */
-            },
-            shape: CircleBorder(),
-            color: Colors.pink,
-            child: Container(
-              child: Text("Settings"),
+              ),
             ),
-            )
-        : Container();
+          )
+        : Container(
+            // Empty Container
+            );
   }
 
   void showFoatingActionButton(bool value) {
@@ -85,3 +87,5 @@ class _ButtonSettingsSheetState extends State<ButtonSettingsSheet> {
     });
   }
 }
+
+

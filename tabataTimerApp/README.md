@@ -56,5 +56,16 @@ RadialGradient(
       )
 ```
 
+Color notes:
+Colors:
+0xff998888
+
+gradient: LinearGradient(
+            begin: pointUp ? Alignment.bottomCenter: Alignment.topCenter,
+            end: Alignment.center,
+            // end: pointUp ? Alignment.topCenter : Alignment.bottomCenter,
+            colors: [Color(0xff998888), Color(0xffFFF8F0)],
+          ), 
+
 
 

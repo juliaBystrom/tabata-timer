@@ -17,9 +17,8 @@ class PausButton extends StatefulWidget {
 class _PausButtonState extends State<PausButton> {
   void onPressFunction() {
     setState(() {
-      widget.tabataInfo.startTabata(false);
-      widget.tabataInfo.tabataTrainingIsPaused =
-          !widget.tabataInfo.tabataTrainingIsPaused;
+      // widget.tabataInfo.startTabata(false);
+      widget.tabataInfo.pausWorkout();
     });
   }
 

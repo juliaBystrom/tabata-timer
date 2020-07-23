@@ -3,8 +3,6 @@ import '../tabataInfo.dart';
 import './timeChooser.dart';
 import '../StyleCollection/textStyles.dart';
 
-
-
 class SettingsPane extends StatefulWidget {
   final TabtaInfo tabataInfo;
   SettingsPane(this.tabataInfo);
@@ -19,16 +17,14 @@ class _SettingsPaneState extends State<SettingsPane> {
     return Column(
       // crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          // mainAxisSize: MainAxisSize.min,
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TimeChooser(widget.tabataInfo, "Work time:",
-                widget.tabataInfo.changeSecondsWorkTime, false),
-            TimeChooser(widget.tabataInfo, "Rest time:",
-                widget.tabataInfo.changeSecondsRestTime, true),
-          ],
-        ),
+        Row(children: [
+          TimeChooser(widget.tabataInfo, "Work:",
+              widget.tabataInfo.changeSecondsWorkTime, TabataStatus.working),
+          TimeChooser(widget.tabataInfo, "Rest:",
+              widget.tabataInfo.changeSecondsRestTime, TabataStatus.resting),
+          TimeChooser(widget.tabataInfo, "Prep:",
+              widget.tabataInfo.changeSecondsPrepTime, TabataStatus.preparing),
+        ]),
         Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,7 +33,6 @@ class _SettingsPaneState extends State<SettingsPane> {
               "Cycles:",
               textScaleFactor: 2,
               style: TextStyles().textStyle,
-
             ),
             Row(
               children: [

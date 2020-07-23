@@ -71,7 +71,7 @@ class _ClockDisplayState extends State<ClockDisplay> {
         widget.minutes.toString().padLeft(2, '0').substring(1, 2);
 
     return Container(
-        color: Colors.blue,
+        // color: Colors.blue,
         padding: EdgeInsets.all(10),
       
         child: Table(
