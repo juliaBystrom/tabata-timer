@@ -1,3 +1,9 @@
+import 'package:flutter/material.dart';
+import 'StyleCollection/textStyles.dart';
+
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+
 enum WorkoutStatus {
   notStarted,
   tabataOn,
@@ -11,11 +17,11 @@ enum TabataStatus {
 }
 
 class TabtaInfo {
-  int secondsPrepTime;
-  int secondsWorkTime;
-  int secondsRestTime;
-  int nrOfCycles;
-  int nrOfTabatas;
+  int _secondsPrepTime;
+  int _secondsWorkTime;
+  int _secondsRestTime;
+  int _nrOfCycles;
+  int _nrOfTabatas;
   TabataHandler tabataHandler;
   Function newTabataInfo;
   Function startTabata;
@@ -26,25 +32,24 @@ class TabtaInfo {
   // bool used if there is an need to check if the functions newTabataInfo and startTabata have
   // been set before acsessed
   bool mainScreenFunctionsSet;
-
   bool tabataTrainingIsPaused;
 
   WorkoutStatus status;
 
   TabtaInfo() {
     // Default values
-    secondsPrepTime = 10;
-    secondsWorkTime = 20;
-    secondsRestTime = 10;
-    nrOfCycles = 10;
-    nrOfTabatas = 3;
+    _secondsPrepTime = 10;
+    _secondsWorkTime = 20;
+    _secondsRestTime = 10;
+    _nrOfCycles = 10;
+    _nrOfTabatas = 3;
 
     // Flag for setting functions
     mainScreenFunctionsSet = false;
 
     // Creates Default TabataHandler
-    tabataHandler = new TabataHandler(secondsPrepTime, secondsWorkTime,
-        secondsRestTime, nrOfCycles, nrOfTabatas, finishWorkout);
+    tabataHandler = new TabataHandler(_secondsPrepTime, _secondsWorkTime,
+        _secondsRestTime, _nrOfCycles, _nrOfTabatas, finishWorkout);
 
     // Initilizing the Functions to diminish acsessing null function issues
     newTabataInfo = () => {};
@@ -56,6 +61,14 @@ class TabtaInfo {
 
     tabataTrainingIsPaused = false;
   }
+
+  // Getters
+  TabataHandler getTabataHandler() => tabataHandler;
+  int getSecondsPrepTime() => _secondsPrepTime;
+  int getSecondsWorkTime() => _secondsWorkTime;
+  int getSecondsRestTime() => _secondsRestTime;
+  int getNrOfCycles() => _nrOfCycles;
+  int getNrOfTabatas() => _nrOfTabatas;
 
   void finishWorkout() {
     timerFinish();
@@ -87,70 +100,134 @@ class TabtaInfo {
   }
 
   void changeSecondsPrepTime(int s) {
-    if (0 <= (secondsPrepTime + s)) {
-      secondsPrepTime = secondsPrepTime + s;
+    if (0 <= (_secondsPrepTime + s)) {
+      _secondsPrepTime = _secondsPrepTime + s;
     }
   }
 
   void changeSecondsWorkTime(int s) {
-    if (0 <= (secondsWorkTime + s)) {
-      secondsWorkTime = secondsWorkTime + s;
+    if (0 <= (_secondsWorkTime + s)) {
+      _secondsWorkTime = _secondsWorkTime + s;
     }
   }
 
   void changeSecondsRestTime(int s) {
-    if (0 <= (secondsRestTime + s)) {
-      secondsRestTime = secondsRestTime + s;
+    if (0 <= (_secondsRestTime + s)) {
+      _secondsRestTime = _secondsRestTime + s;
     }
   }
 
-  void changeNrOfcycles(int n) {
-    if (0 < (nrOfCycles + n) && (nrOfCycles + n) < 99) {
-      nrOfCycles = nrOfCycles + n;
+  void changeNrOfCycles(int n) {
+    if (0 < (_nrOfCycles + n) && (_nrOfCycles + n) < 99) {
+      _nrOfCycles = _nrOfCycles + n;
     }
   }
 
   void changeNrOfTabatas(int n) {
-    if (0 < (nrOfTabatas + n) && (nrOfTabatas + n) < 99) {
-      nrOfTabatas = nrOfTabatas + n;
+    if (0 < (_nrOfTabatas + n) && (_nrOfTabatas + n) < 99) {
+      _nrOfTabatas = _nrOfTabatas + n;
     }
   }
 
   void updateTabataHandler() {
-    tabataHandler = new TabataHandler(secondsPrepTime, secondsWorkTime,
-        secondsRestTime, nrOfCycles, nrOfTabatas, finishWorkout);
-  }
-
-  TabataHandler getTabataHandler() {
-    return tabataHandler;
+    tabataHandler = new TabataHandler(_secondsPrepTime, _secondsWorkTime,
+        _secondsRestTime, _nrOfCycles, _nrOfTabatas, finishWorkout);
   }
 }
 
 class TabataHandler {
-  int secondsPrepTime;
-  int secondsWorkTime;
-  int secondsRestTime;
-  int nrOfCycles;
-  int nrOfTabatas;
+  int _secondsPrepTime;
+  int _secondsWorkTime;
+  int _secondsRestTime;
+  int _nrOfCycles;
+  int _nrOfTabatas;
 
   int nrOfActiveTabata;
   int nrOfActiveCycle;
   TabataStatus tabataStatus;
 
   Function finishWorkout;
+  List<TabataStatus> tabataSchedule;
+  List<Builder> tabataScheduleContainers;
 
   TabataHandler(
-      this.secondsPrepTime,
-      this.secondsWorkTime,
-      this.secondsRestTime,
-      this.nrOfCycles,
-      this.nrOfTabatas,
+      this._secondsPrepTime,
+      this._secondsWorkTime,
+      this._secondsRestTime,
+      this._nrOfCycles,
+      this._nrOfTabatas,
       this.finishWorkout) {
     // Start with workout
     tabataStatus = TabataStatus.working;
 
-    nrOfActiveTabata = nrOfTabatas;
-    nrOfActiveCycle = nrOfCycles;
+    nrOfActiveTabata = _nrOfTabatas;
+    nrOfActiveCycle = _nrOfCycles;
+
+    tabataSchedule = createtabataSchedule();
+    createTabataScheduleContainers();
+  }
+
+  List<TabataStatus> createtabataSchedule() {
+    // int listsize = 2 * _nrOfCycles * _nrOfTabatas + _nrOfTabatas;
+    List<TabataStatus> list = new List();
+    for (int i = 0; i < _nrOfTabatas; i++) {
+      list.add(TabataStatus.preparing);
+      for (int j = 0; j < _nrOfCycles; j++) {
+        list.add(TabataStatus.working);
+        list.add(TabataStatus.resting);
+      }
+    }
+
+    return list;
+  }
+
+  // Should probably create an own class for this function
+  void createTabataScheduleContainers() {
+    TextStyles textstyle = new TextStyles();
+    tabataScheduleContainers = tabataSchedule.map((tabataStatus) {
+      String tabataStatusString;
+      switch (tabataStatus) {
+        case TabataStatus.preparing:
+          tabataStatusString = "PREPARE";
+          break;
+        case TabataStatus.resting:
+          tabataStatusString = "REST";
+          break;
+        case TabataStatus.working:
+          tabataStatusString = "WORKOUT";
+          break;
+        default:
+          tabataStatusString = "ERROR";
+      }
+
+      return Builder(
+        builder: (BuildContext context) {
+          return Container(
+            width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.symmetric(horizontal: 5.0),
+            // padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.amber,
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              tabataStatusString,
+              style: textstyle.textStyle,
+              textScaleFactor: 4,
+              textAlign: TextAlign.center,
+            ),
+          );
+        },
+      );
+    }).toList();
+  }
+
+  List<TabataStatus> getTabataSchedule() {
+    return tabataSchedule;
+  }
+
+  List<Builder> getTabataScheduleContainers() {
+    return tabataScheduleContainers;
   }
 
   // Depending on the activity (resting or Working) this function gives
@@ -159,13 +236,13 @@ class TabataHandler {
   int getActiveTime() {
     switch (tabataStatus) {
       case TabataStatus.working:
-        return secondsWorkTime;
+        return _secondsWorkTime;
         break;
       case TabataStatus.resting:
-        return secondsRestTime;
+        return _secondsRestTime;
         break;
       case TabataStatus.preparing:
-        return secondsPrepTime;
+        return _secondsPrepTime;
       default:
         {
           print("error: tabataInfo: getActiveTime");
@@ -185,7 +262,7 @@ class TabataHandler {
         // Now one tabata have been done
         nrOfActiveTabata--;
         // When an new Tabata is started the number of cycles need to be reseted
-        nrOfActiveCycle = nrOfCycles;
+        nrOfActiveCycle = _nrOfCycles;
         // New tabata starts with preparing time
         tabataStatus = TabataStatus.preparing;
       } else {

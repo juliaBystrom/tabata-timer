@@ -31,17 +31,17 @@ class _TimeChooserState extends State<TimeChooser> {
     switch (widget.tabataStatus) {
       case TabataStatus.preparing:
         {
-          seconds = widget.tabataInfo.secondsPrepTime;
+          seconds = widget.tabataInfo.getSecondsPrepTime();
         }
         break;
       case TabataStatus.working:
         {
-          seconds = widget.tabataInfo.secondsWorkTime;
+          seconds = widget.tabataInfo.getSecondsWorkTime();
         }
         break;
       case TabataStatus.resting:
         {
-          seconds = widget.tabataInfo.secondsRestTime;
+          seconds = widget.tabataInfo.getSecondsRestTime();
         }
         break;
     }

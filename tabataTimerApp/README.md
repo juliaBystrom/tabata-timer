@@ -2,6 +2,17 @@
 
 A tabata timer app.
 
+
+## Dependencies
+google_fonts
+Read more at:
+
+carousel_slider
+Read more at: https://pub.dev/packages/carousel_slider
+
+provider
+Read more at: https://pub.dev/packages/provider
+
 ## Color scheme
 ### Colors:
 #### Purple:

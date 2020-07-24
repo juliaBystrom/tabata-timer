@@ -22,8 +22,8 @@ class _OneDigitChooserState extends State<OneDigitChooser> {
   @override
   Widget build(BuildContext context) {
     displayNr = widget.showCyclesOutherwiseTabatas
-        ? widget.tabataInfo.nrOfCycles
-        : widget.tabataInfo.nrOfTabatas;
+        ? widget.tabataInfo.getNrOfCycles()
+        : widget.tabataInfo.getNrOfTabatas();
 
     return Container(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 10),

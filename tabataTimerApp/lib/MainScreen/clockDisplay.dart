@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../timeInfo.dart';
+import 'package:provider/provider.dart';
 // import './StyleCollection/textStyles.dart';
 
 // import 'dart:async';
@@ -36,7 +38,6 @@ class _ClockDisplayState extends State<ClockDisplay> {
     showMinutesBigg =
         ((widget.minutes > 0 && widget.seconds < 5) || widget.seconds > 55);
 
-
     // Textstyles for the digits
     TextStyle minutesTextStyle = GoogleFonts.squadaOne(
       fontSize: 110,
@@ -71,23 +72,23 @@ class _ClockDisplayState extends State<ClockDisplay> {
         widget.minutes.toString().padLeft(2, '0').substring(1, 2);
 
     return Container(
-        // color: Colors.blue,
-        padding: EdgeInsets.all(10),
-      
-        child: Table(
-          // Uncomment the line above to see the borders of the digits
-          // border: TableBorder.all(),
-          textBaseline: TextBaseline.alphabetic,
-          defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
+      // color: Colors.blue,
+      padding: EdgeInsets.all(10),
+      child: Table(
+        // Uncomment the line above to see the borders of the digits
+        // border: TableBorder.all(),
+        textBaseline: TextBaseline.alphabetic,
+        defaultVerticalAlignment: TableCellVerticalAlignment.baseline,
 
-          columnWidths: {
-            0: FixedColumnWidth(0),
-            1: FractionColumnWidth(0.2),
-            2: FractionColumnWidth(0.2),
-            3: FixedColumnWidth(25)
-          },
-          children: [
-            TableRow(children: [
+        columnWidths: {
+          0: FixedColumnWidth(0),
+          1: FractionColumnWidth(0.2),
+          2: FractionColumnWidth(0.2),
+          3: FixedColumnWidth(25)
+        },
+        children: [
+          TableRow(
+            children: [
               // Solving an align issue
               TableCell(
                 child: Text(
@@ -157,8 +158,10 @@ class _ClockDisplayState extends State<ClockDisplay> {
                   ),
                 ),
               ),
-            ])
-          ],
-        ));
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

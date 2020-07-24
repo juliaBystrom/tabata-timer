@@ -76,7 +76,7 @@ class _SettingsPaneState extends State<SettingsPane> {
                       textScaleFactor: 2,
                       style: TextStyles().textStyle,
                     ),
-                    OneDigitChooser(widget.tabataInfo.changeNrOfcycles,
+                    OneDigitChooser(widget.tabataInfo.changeNrOfCycles,
                         widget.tabataInfo, true),
                   ],
                 ),

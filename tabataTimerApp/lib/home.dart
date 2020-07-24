@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import './MainScreen/mainScreen.dart';
 import 'SettingsWidgets/ButtonSettingsSheet.dart';
 import 'tabataInfo.dart';
-import './StartButton/startButton.dart';
-import './StartButton/stopButton.dart';
-import './StartButton/pausButton.dart';
+import './TimerControll/startButton.dart';
+import './TimerControll/stopButton.dart';
+import './TimerControll/pausButton.dart';
+import './MainScreen/body.dart';
 
 class Home extends StatefulWidget {
   final TabtaInfo tabataInfo = new TabtaInfo();
@@ -37,14 +38,14 @@ class _HomeState extends State<Home> {
             child: Container(
               height: 140,
               child: PausButton(
-                  widget.tabataInfo, changeBottomNavBarVisibility, size),
+                  widget.tabataInfo, changeBottomNavBarVisibility),
             ),
           ),
           TableCell(
             child: Container(
               height: 140,
               child: StopButton(
-                  widget.tabataInfo, changeBottomNavBarVisibility, size),
+                  widget.tabataInfo, changeBottomNavBarVisibility),
             ),
           ),
         ]),
@@ -61,7 +62,7 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-        child: MainScreen(widget.tabataInfo),
+        child: Body(widget.tabataInfo),
       ),
       backgroundColor: Color(0xffFFF8F0),
 
@@ -88,7 +89,7 @@ class _HomeState extends State<Home> {
                 child: widget.tabataInfo.workoutStarted()
                     ? pausStopButtons
                     : StartButton(
-                        widget.tabataInfo, changeBottomNavBarVisibility, size),
+                        widget.tabataInfo, changeBottomNavBarVisibility),
               ),
               widget.showNavBar
                   ? Container(
@@ -112,7 +113,6 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      // extendBody: true,
     );
   }
 }
