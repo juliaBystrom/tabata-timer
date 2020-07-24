@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../tabataInfo.dart';
 import './settingsPane.dart';
-import 'dart:async';
-// import '../Painters/BottomSheetPainer.dart';
 
 class ButtonSettingsSheet extends StatefulWidget {
   final TabtaInfo tabataInfo;

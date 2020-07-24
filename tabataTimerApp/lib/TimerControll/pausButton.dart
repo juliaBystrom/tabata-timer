@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../tabataInfo.dart';
-import '../StyleCollection/textStyles.dart';
+import '../globals.dart' as globals;
 
 class PausButton extends StatefulWidget {
   final TabtaInfo tabataInfo;
   final Function changeBottomNavBarVisibility;
-  final TextStyle textStyle = TextStyles().textStyle;
+  final TextStyle textStyle = globals.textStyle;
 
   PausButton(this.tabataInfo, this.changeBottomNavBarVisibility);
 
@@ -24,18 +24,17 @@ class _PausButtonState extends State<PausButton> {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-        onPressed: () {
-          onPressFunction();
-        },
-        materialTapTargetSize: MaterialTapTargetSize.padded,
-        color: widget.tabataInfo.tabataTrainingIsPaused
-            ? Color(0xff31CB00)
-            : Color(0xffF5B700),
-        child: Text(
-          widget.tabataInfo.tabataTrainingIsPaused ? "CONTINUE" : "PAUS",
-          style: widget.textStyle,
-        ),
-      
+      onPressed: () {
+        onPressFunction();
+      },
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+      color: widget.tabataInfo.tabataTrainingIsPaused
+          ? Color(0xff31CB00)
+          : Color(0xffF5B700),
+      child: Text(
+        widget.tabataInfo.tabataTrainingIsPaused ? "CONTINUE" : "PAUS",
+        style: widget.textStyle,
+      ),
     );
   }
 }

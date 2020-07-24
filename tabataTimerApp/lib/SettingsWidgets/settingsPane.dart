@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../tabataInfo.dart';
 import './timeChooser.dart';
-import '../StyleCollection/textStyles.dart';
+import '../globals.dart' as globals;
+
 import 'oneDigitChooser.dart';
 
 class SettingsPane extends StatefulWidget {
@@ -31,16 +32,17 @@ class _SettingsPaneState extends State<SettingsPane> {
           child: Text(
             "Time",
             textScaleFactor: 3,
-            style: TextStyles().textStyle,
+            style: globals.textStyle
+,
           ),
         ),
         Row(children: [
           TimeChooser(widget.tabataInfo, "WORK:",
-              widget.tabataInfo.changeSecondsWorkTime, TabataStatus.working),
+              widget.tabataInfo.changeSecondsWorkTime, globals.TabataStatus.working),
           TimeChooser(widget.tabataInfo, "REST:",
-              widget.tabataInfo.changeSecondsRestTime, TabataStatus.resting),
+              widget.tabataInfo.changeSecondsRestTime, globals.TabataStatus.resting),
           TimeChooser(widget.tabataInfo, "PREP:",
-              widget.tabataInfo.changeSecondsPrepTime, TabataStatus.preparing),
+              widget.tabataInfo.changeSecondsPrepTime, globals.TabataStatus.preparing),
         ]),
         Container(
           // color: Color(0x2f7DCFB6),
@@ -53,7 +55,8 @@ class _SettingsPaneState extends State<SettingsPane> {
           child: Text(
             "Workout",
             textScaleFactor: 3,
-            style: TextStyles().textStyle,
+            style: globals.textStyle
+,
           ),
         ),
         Row(
@@ -74,7 +77,8 @@ class _SettingsPaneState extends State<SettingsPane> {
                     Text(
                       "CYCLES:",
                       textScaleFactor: 2,
-                      style: TextStyles().textStyle,
+                      style: globals.textStyle
+,
                     ),
                     OneDigitChooser(widget.tabataInfo.changeNrOfCycles,
                         widget.tabataInfo, true),
@@ -100,7 +104,8 @@ class _SettingsPaneState extends State<SettingsPane> {
                     Text(
                       "TABATAS:",
                       textScaleFactor: 2,
-                      style: TextStyles().textStyle,
+                      style: globals.textStyle
+,
                     ),
                     OneDigitChooser(widget.tabataInfo.changeNrOfTabatas,
                         widget.tabataInfo, false),

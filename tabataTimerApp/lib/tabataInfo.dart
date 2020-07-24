@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
-import 'StyleCollection/textStyles.dart';
+import 'globals.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
-enum WorkoutStatus {
-  notStarted,
-  tabataOn,
-  finished,
-}
 
-enum TabataStatus {
-  preparing,
-  working,
-  resting,
-}
 
 class TabtaInfo {
   int _secondsPrepTime;
@@ -183,7 +173,6 @@ class TabataHandler {
 
   // Should probably create an own class for this function
   void createTabataScheduleContainers() {
-    TextStyles textstyle = new TextStyles();
     tabataScheduleContainers = tabataSchedule.map((tabataStatus) {
       String tabataStatusString;
       switch (tabataStatus) {
@@ -212,7 +201,7 @@ class TabataHandler {
             alignment: Alignment.center,
             child: Text(
               tabataStatusString,
-              style: textstyle.textStyle,
+              style: textStyle,
               textScaleFactor: 4,
               textAlign: TextAlign.center,
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../tabataInfo.dart';
-import '../StyleCollection/textStyles.dart';
+import '../globals.dart' as globals;
+
 import 'buttonTimeChange.dart';
 
 class TimeChooser extends StatefulWidget {
@@ -8,7 +9,7 @@ class TimeChooser extends StatefulWidget {
   final String choosenTimeText;
   final Function increaseSeconds;
 
-  final TabataStatus tabataStatus;
+  final globals.TabataStatus tabataStatus;
 
   TimeChooser(this.tabataInfo, this.choosenTimeText, this.increaseSeconds,
       this.tabataStatus);
@@ -29,17 +30,17 @@ class _TimeChooserState extends State<TimeChooser> {
   @override
   Widget build(BuildContext context) {
     switch (widget.tabataStatus) {
-      case TabataStatus.preparing:
+      case globals.TabataStatus.preparing:
         {
           seconds = widget.tabataInfo.getSecondsPrepTime();
         }
         break;
-      case TabataStatus.working:
+      case globals.TabataStatus.working:
         {
           seconds = widget.tabataInfo.getSecondsWorkTime();
         }
         break;
-      case TabataStatus.resting:
+      case globals.TabataStatus.resting:
         {
           seconds = widget.tabataInfo.getSecondsRestTime();
         }
@@ -54,7 +55,7 @@ class _TimeChooserState extends State<TimeChooser> {
         // margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
         decoration: BoxDecoration(
           // color: Color(0x2f7DCFB6),
-          border: widget.tabataStatus == TabataStatus.resting
+          border: widget.tabataStatus == globals.TabataStatus.resting
               ? borderResting
               : Border(),
         ),
@@ -65,7 +66,7 @@ class _TimeChooserState extends State<TimeChooser> {
             Text(
               widget.choosenTimeText,
               textScaleFactor: 2,
-              style: TextStyles().textStyle,
+              style: globals.textStyle,
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -83,7 +84,7 @@ class _TimeChooserState extends State<TimeChooser> {
                       Text(
                         "${(seconds ~/ 60).toString().padLeft(2, '0')}",
                         textScaleFactor: 2,
-                        style: TextStyles().textStyleNumbers,
+                        style: globals.textStyleNumbers,
                       ),
                       ButtonTimeChange(() {
                         setState(() {
@@ -109,7 +110,7 @@ class _TimeChooserState extends State<TimeChooser> {
                       Text(
                         "${(seconds % 60).toString().padLeft(2, '0')}",
                         textScaleFactor: 2,
-                        style: TextStyles().textStyleNumbers,
+                        style: globals.textStyleNumbers,
                       ),
                       ButtonTimeChange(() {
                         setState(() {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tabataTimerApp/StyleCollection/textStyles.dart';
+import '../globals.dart' as globals;
 import '../tabataInfo.dart';
 
 import 'buttonTimeChange.dart';
@@ -38,7 +38,7 @@ class _OneDigitChooserState extends State<OneDigitChooser> {
           Text(
             "${displayNr.toString().padLeft(2, '0')}",
             textScaleFactor: 2,
-            style: TextStyles().textStyleNumbers,
+            style: globals.textStyleNumbers,
           ),
           ButtonTimeChange(() {
             setState(() {

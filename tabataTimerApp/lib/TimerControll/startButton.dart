@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import '../tabataInfo.dart';
-import '../StyleCollection/textStyles.dart';
+import '../globals.dart' as globals;
+
 
 class StartButton extends StatefulWidget {
   final TabtaInfo tabataInfo;
   final Function changeBottomNavBarVisibility;
-  final TextStyle textStyle = TextStyles().textStyle;
+  final TextStyle textStyle = globals.textStyle
+;
 
   StartButton(this.tabataInfo, this.changeBottomNavBarVisibility);
 
