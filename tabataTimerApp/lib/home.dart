@@ -5,7 +5,8 @@ import 'tabataInfo.dart';
 import './TimerControll/startButton.dart';
 import './TimerControll/stopButton.dart';
 import './TimerControll/pausButton.dart';
-import './MainScreen/body.dart';
+import 'timeInfo.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   final TabtaInfo tabataInfo = new TabtaInfo();
@@ -25,7 +26,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
 
     var pausStopButtons = Table(
       columnWidths: {
@@ -37,15 +38,15 @@ class _HomeState extends State<Home> {
           TableCell(
             child: Container(
               height: 140,
-              child: PausButton(
-                  widget.tabataInfo, changeBottomNavBarVisibility),
+              child:
+                  PausButton(widget.tabataInfo, changeBottomNavBarVisibility),
             ),
           ),
           TableCell(
             child: Container(
               height: 140,
-              child: StopButton(
-                  widget.tabataInfo, changeBottomNavBarVisibility),
+              child:
+                  StopButton(widget.tabataInfo, changeBottomNavBarVisibility),
             ),
           ),
         ]),
@@ -62,10 +63,12 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-        child: Body(widget.tabataInfo),
+        child: ChangeNotifierProvider(
+          create: (context) => TimeInfo(widget.tabataInfo.getSecondsPrepTime()),
+          child: MainScreen(widget.tabataInfo),
+        ),
       ),
       backgroundColor: Color(0xffFFF8F0),
-
       bottomNavigationBar: BottomAppBar(
         color: Color(0xff340068),
         // color: Color(0xff271F30),

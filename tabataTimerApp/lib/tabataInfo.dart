@@ -28,10 +28,10 @@ class TabtaInfo {
 
   TabtaInfo() {
     // Default values
-    _secondsPrepTime = 10;
-    _secondsWorkTime = 20;
-    _secondsRestTime = 10;
-    _nrOfCycles = 10;
+    _secondsPrepTime = 5;
+    _secondsWorkTime = 3;
+    _secondsRestTime = 2;
+    _nrOfCycles = 3;
     _nrOfTabatas = 3;
 
     // Flag for setting functions
@@ -148,13 +148,17 @@ class TabataHandler {
       this._nrOfTabatas,
       this.finishWorkout) {
     // Start with workout
-    tabataStatus = TabataStatus.working;
+    tabataStatus = TabataStatus.preparing;
 
     nrOfActiveTabata = _nrOfTabatas;
     nrOfActiveCycle = _nrOfCycles;
 
     tabataSchedule = createtabataSchedule();
     createTabataScheduleContainers();
+  }
+
+  int getStartTime(){
+    return _secondsPrepTime;
   }
 
   List<TabataStatus> createtabataSchedule() {

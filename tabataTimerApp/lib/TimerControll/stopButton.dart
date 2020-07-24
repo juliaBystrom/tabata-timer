@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import '../tabataInfo.dart';
-import '../globals.dart' as globals;
+import '../globals.dart';
 
 
 // TODO:  DELETE THIS CLASS AND MAKE THE BUTTON THROUGH startButton
 class StopButton extends StatefulWidget {
   final TabtaInfo tabataInfo;
   final Function changeBottomNavBarVisibility;
-  final TextStyle textStyle = globals.textStyle
-;
+
 
   StopButton(this.tabataInfo, this.changeBottomNavBarVisibility);
 
@@ -36,7 +35,7 @@ class _StopButtonState extends State<StopButton> {
       color: Color(0xffF25F5C),
       child: Text(
         "STOP",
-        style: widget.textStyle,
+        style: textStyle,
       ),
     );
   }

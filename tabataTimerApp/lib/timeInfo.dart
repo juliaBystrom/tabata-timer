@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 
 class TimeInfo extends ChangeNotifier {
-  int _secondsLeft = 60;
+  int _secondsLeft;
   bool _isActive = false;
+  TimeInfo(this._secondsLeft);
+
 
   int getSecondsLeft() => _secondsLeft;
 
@@ -20,9 +22,11 @@ class TimeInfo extends ChangeNotifier {
 
   void reverseActive() {
     _isActive = !_isActive;
+    // notifyListeners();
   }
 
   void setIsActive(bool b) {
     _isActive = b;
+    // notifyListeners();
   }
 }

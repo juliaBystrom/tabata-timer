@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
+      title: 'Flutter Demo',
 /*       theme: ThemeData(
         // primarySwatch: Colors.blue,
         //fontFamily: GoogleFonts.squadaOne(color: Colors.cyanAccent).toString(),
@@ -24,9 +24,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ), */
-        home: ChangeNotifierProvider(
-          create: (context) => TimeInfo(),
-          child: Home(),
-        ),);
+      home: Home(),
+    );
   }
 }

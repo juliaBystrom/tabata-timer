@@ -5,14 +5,14 @@ import '../tabataInfo.dart';
 
 class Carousel extends StatefulWidget {
   TabtaInfo _tabataInfo;
-  Carousel(this._tabataInfo);
+  CarouselController carouselWorkoutStatusController;
+  Carousel(this._tabataInfo,this.carouselWorkoutStatusController);
   @override
   _CarouselState createState() => _CarouselState();
 }
 
 class _CarouselState extends State<Carousel> {
   // final Widget child;
-  CarouselController carouselControllerForTimer = CarouselController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _CarouselState extends State<Carousel> {
           aspectRatio: 5 / 2,
           // initialPage: 0,
         ),
-        carouselController: carouselControllerForTimer,
+        carouselController: widget.carouselWorkoutStatusController,
         items:
             widget._tabataInfo.getTabataHandler().getTabataScheduleContainers(),
       ),

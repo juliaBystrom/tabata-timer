@@ -5,18 +5,18 @@ import '../timeInfo.dart';
 import './clockDisplay.dart';
 import '../tabataInfo.dart';
 import 'carousel.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class MainScreen extends StatefulWidget {
   TabtaInfo tabataInfo;
   TabataHandler tabataHandler;
-  int secondsStart;
 
   bool mainScreenFunctionsSet;
 
   MainScreen(TabtaInfo tabataInfo) {
     this.tabataInfo = tabataInfo;
     tabataHandler = tabataInfo.tabataHandler;
-    secondsStart = tabataHandler.getActiveTime();
+    // secondsStart = tabataHandler.getActiveTime();
     mainScreenFunctionsSet = false;
   }
 
@@ -26,28 +26,23 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   static const duration = const Duration(seconds: 1);
+  CarouselController carouselWorkoutStatusController = CarouselController();
 
   TabataHandler tabataHandler;
 
-  int secondsPassed;
   bool isActive = false;
   Timer timer;
 
-  _MainScreenState(this.tabataHandler) {
-    secondsPassed = tabataHandler.getActiveTime();
-    print("consructor of mainscreenstate sp: $secondsPassed");
-  }
+  _MainScreenState(this.tabataHandler);
 
-  /*  @override
+  @override
   void initState() {
-    tabataHandler = widget.tabataInfo.tabataHandler;
-    secondsPassed = tabataHandler.getActiveTime();
+    print("new state of mainscreen");
     super.initState();
-  } */
+  }
 
   void handleTick() {
     var timeInfo = Provider.of<TimeInfo>(context, listen: false);
-
     if (timeInfo.getIsActive()) {
       timeInfo.tick();
       // Because the timer will count from inputed time to 1, the check secondsPassed <= 0 will make
@@ -61,21 +56,26 @@ class _MainScreenState extends State<MainScreen> {
 
   void updateTabataProgress() {
     var timeInfo = Provider.of<TimeInfo>(context, listen: false);
-    // OBS updateInfo need to be valled before geting the time
+    // OBS updateInfo need to be executed before geting the new time
     tabataHandler.updateInfo();
-
     // The timer will count from inputed time to 1 and then reset. Intead of inputtime-1 to 0.
     // the +1 is because the timer will start with subtracting 1.
-    timeInfo.setTime(tabataHandler.getActiveTime() + 1);
+    timeInfo.setTime(tabataHandler.getActiveTime());
+
+    // Change the carousel slide
+    carouselWorkoutStatusController.nextPage(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.linear,
+    );
   }
 
   void newTabataInfo() {
-    var timeInfo = Provider.of<TimeInfo>(context, listen: false);
-    timeInfo.setTime(tabataHandler.getActiveTime() + 1);
-
+    // Will update the tabatahandler and therefore create a new carousel
     setState(() {
       tabataHandler = widget.tabataInfo.getTabataHandler();
     });
+    var timeInfo = Provider.of<TimeInfo>(context, listen: false);
+    timeInfo.setTime(tabataHandler.getActiveTime());
     print("New Tabata ready to start");
   }
 
@@ -85,9 +85,12 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void timerFinish() {
+    // Reseting the timer and carousel
     var timeInfo = Provider.of<TimeInfo>(context, listen: false);
-    timeInfo.setTime(tabataHandler.getActiveTime());
+    timeInfo.setTime(tabataHandler.getStartTime());
     timeInfo.setIsActive(false);
+    carouselWorkoutStatusController.animateToPage(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+
   }
 
   @override
@@ -120,7 +123,7 @@ class _MainScreenState extends State<MainScreen> {
               return ClockDisplay(minutes, seconds);
             },
           ),
-          Carousel(widget.tabataInfo),
+          Carousel(widget.tabataInfo, carouselWorkoutStatusController),
         ],
       ),
     );
