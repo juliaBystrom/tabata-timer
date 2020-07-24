@@ -22,3 +22,7 @@ enum TabataStatus {
   working,
   resting,
 }
+
+final Color whiteBackground = Color(0xffFFF8F0);
+
+final Color greenBlue = Color(0xff7DCFB6);
