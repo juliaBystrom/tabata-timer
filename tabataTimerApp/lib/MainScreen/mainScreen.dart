@@ -4,6 +4,7 @@ import 'dart:async';
 import '../timeInfo.dart';
 import './clockDisplay.dart';
 import '../tabataInfo.dart';
+import 'ProgressBar/progressBar.dart';
 import 'carousel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -85,10 +86,11 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void timerFinish() {
-    // Reseting the timer and carousel
+    // Reseting the timer, progrerss bar and carousel
     var timeInfo = Provider.of<TimeInfo>(context, listen: false);
     timeInfo.setTime(tabataHandler.getStartTime());
     timeInfo.setIsActive(false);
+    timeInfo.resetElapsedTime();
     carouselWorkoutStatusController.animateToPage(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
 
   }
@@ -124,6 +126,7 @@ class _MainScreenState extends State<MainScreen> {
             },
           ),
           Carousel(widget.tabataInfo, carouselWorkoutStatusController),
+          ProgressBar(tabataHandler.getTotalTabataTime(),tabataHandler.getNrOfTabatas()),
         ],
       ),
     );

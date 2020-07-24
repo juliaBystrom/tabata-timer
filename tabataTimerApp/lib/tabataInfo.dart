@@ -131,6 +131,7 @@ class TabataHandler {
   int _secondsRestTime;
   int _nrOfCycles;
   int _nrOfTabatas;
+  int _totalSecondsTabata;
 
   int nrOfActiveTabata;
   int nrOfActiveCycle;
@@ -152,6 +153,8 @@ class TabataHandler {
 
     nrOfActiveTabata = _nrOfTabatas;
     nrOfActiveCycle = _nrOfCycles;
+    
+    _totalSecondsTabata = (_secondsWorkTime+_secondsRestTime)*_nrOfCycles*_nrOfTabatas;
 
     tabataSchedule = createtabataSchedule();
     createTabataScheduleContainers();
@@ -160,6 +163,10 @@ class TabataHandler {
   int getStartTime(){
     return _secondsPrepTime;
   }
+
+  int getTotalTabataTime() =>_totalSecondsTabata;
+
+  int getNrOfTabatas() => _nrOfTabatas;
 
   List<TabataStatus> createtabataSchedule() {
     // int listsize = 2 * _nrOfCycles * _nrOfTabatas + _nrOfTabatas;
