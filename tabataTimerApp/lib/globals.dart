@@ -11,6 +11,10 @@ final TextStyle textStyleNumbers = GoogleFonts.cutiveMono(
   fontWeight: FontWeight.bold,
 );
 
+final TextStyle progressNrStyle = GoogleFonts.squadaOne(
+  fontSize: 40,
+);
+
 enum WorkoutStatus {
   notStarted,
   tabataOn,
